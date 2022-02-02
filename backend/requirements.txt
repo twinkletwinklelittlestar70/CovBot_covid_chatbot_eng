@@ -1,0 +1,16 @@
+absl-py
+certifi
+click
+dataclasses
+Flask
+Flask-Cors
+importlib-metadata
+itsdangerous
+Jinja2
+MarkupSafe
+ortools
+protobuf
+six
+typing-extensions
+Werkzeug
+zipp
