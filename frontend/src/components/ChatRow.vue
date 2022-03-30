@@ -6,13 +6,25 @@
       </div>
       <div class="flex-right">
         <div class="content-bg">
-            <div class="content">{{ content }}</div>
+            <div class="content" v-if="content">
+              {{ content }}
+              <el-button type="text" @click="translation">
+                <el-icon><DocumentCopy /></el-icon>
+              </el-button>
+            </div>
+            <div class="translation" v-if="translatedText">
+              {{ translatedText }}
+            </div>
+            <div class="audio" v-if="!content">
+              <span>[audio]</span>.....
+            </div>
         </div>
       </div>
   </div>
 </template>
 
 <script>
+import { translate } from '../api/api'
 
 export default {
   name: 'ChatRow',
@@ -26,14 +38,31 @@ export default {
   },
   data() {
     return {
-
+      translatedText: ''
     };
   },
   components: {
     
   },
   methods: {
-    
+    translation () {
+      const content = this.content
+      const lang = 'zh'
+      
+      if (!content) {
+        return
+      }
+
+      if (this.translatedText) {
+        this.translatedText = ''
+        return
+      }
+      // https://cloud.google.com/translate/docs/basic/translating-text?hl=zh-cn#translate_translate_text-python
+      translate({ content, lang }).then(data => {
+        console.log('result of translation', data)
+        this.translatedText = data.message
+      })
+    }
   }
 }
 </script>
@@ -80,5 +109,10 @@ export default {
 }
 .content {
     text-align: left;
+}
+.translation {
+  text-align: left;
+  font-size: 12px;
+  color: #666666;
 }
 </style>

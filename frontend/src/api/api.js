@@ -1,6 +1,6 @@
-export const postMsg = (msg) => {
+export const postMsg = (params) => {
     return fetch('/api/send_msg', {
-        body: JSON.stringify({message: msg}),
+        body: JSON.stringify(params),
         headers: {
           'content-type': 'application/json'
         },
@@ -10,4 +10,32 @@ export const postMsg = (msg) => {
             return res.json()
         })
         .catch(e => console.error(e))
+}
+
+export const uploadAudio = (params) => {
+  let formData = new FormData
+  formData.append('file', params.audio)
+  
+  return fetch('/api/upload_audio', {
+      method: 'POST',  
+      body: formData,
+    })
+      .then((res) => {
+          return res.json()
+      })
+      .catch(e => console.error(e))
+}
+
+export const translate = (params) => {
+  return fetch('/api/translate', {
+    body: JSON.stringify(params),
+    headers: {
+      'content-type': 'application/json'
+    },
+    method: 'POST',
+  })
+    .then((res) => {
+        return res.json()
+    })
+    .catch(e => console.error(e))
 }

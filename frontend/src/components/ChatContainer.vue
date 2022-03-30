@@ -8,10 +8,11 @@
                 :isRight="data.username === 'Me'" 
                 :username="data.username" 
                 :content="data.content"
+                :audio="data.audio"
             />
         </div>
         <div class="box-end">
-            <UserInput />
+            <UserInput @submit="submitMesg" />
         </div>
     </div>
   </div>
@@ -21,12 +22,20 @@
 import ChatRow from './ChatRow.vue'
 import UserInput from './UserInput.vue'
 
+const USERNAME = {
+    0: "Bot",
+    1: "Me"
+}
+
 export default {
   name: 'ChatContainer',
   data() {
     return {
-        chatData: [{username: "Me", content: "What is the weather today?"},
-        {username: "Bot", content: "Today is windy. Today is windy.Today is windy Today is windy Today is windy."}]
+        chatData: [{
+            username: "Bot",
+            content: "Hi! Welcome to Metis. You can ask me questions about covid."
+        }] // [{username: "Me", content: "What is the weather today?"},{username: "Bot", content: "Today is windy. Today is windy.Today is windy Today is windy Today is windy."}]
+        
     };
   },
   components: {
@@ -34,7 +43,22 @@ export default {
       UserInput
   },
   methods: {
-    
+    submitMesg ({content, audio, user = 1}) { // user 0: chatbot, 1: user
+        console.log('submitMesg', content, user)
+        let newData = { 
+            username: USERNAME[user], 
+            content: content || '', 
+            audio: audio || null 
+        }
+        this.chatData.push(newData)
+        this.scrollToBottom()
+    },
+    scrollToBottom() {
+        this.$nextTick(() => {
+            var container = this.$el.querySelector(".box-body");
+            container.scrollTop = container.scrollHeight;
+        })
+    }
   }
 }
 </script>
@@ -64,6 +88,7 @@ export default {
 }
 .box-body {
     flex: 1;
+    overflow: scroll;
 }
 .box-end {}
 </style>

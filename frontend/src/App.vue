@@ -1,6 +1,6 @@
 <template>
   <!-- <img class="app-logo" alt="Your song logo" src="./assets/banner.jpg"> -->
-  <h1>Metis Chatbot</h1>
+  <h2>CovBox: A covid assistant for everyone.</h2>
   <ChatContainer />
 </template>
 
@@ -31,6 +31,7 @@ body {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  left: 0;
 }
 ::-webkit-scrollbar {
     width: 0px !important;
