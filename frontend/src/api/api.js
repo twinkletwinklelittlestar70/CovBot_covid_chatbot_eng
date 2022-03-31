@@ -1,4 +1,5 @@
 export const postMsg = (params) => {
+  console.log('postMsg', JSON.stringify(params))
     return fetch('/api/send_msg', {
         body: JSON.stringify(params),
         headers: {

@@ -2,6 +2,7 @@ from email import message
 from flask import Flask, render_template, request, jsonify
 from .api.FakeNewsEngine import fake_detector
 from .api.CoughCovidTest import covid_test
+from .api.QAEngine import qa_engine
 from .api.option import Option
 import wave
 import six
@@ -32,7 +33,10 @@ def send_msg():
     data = request.json
     content = data.get('content')
     option = data.get('option')
-    option_state = data.get('option_state')
+    # option_state = data.get('option_state')
+
+    print('content = ', content)
+    print('option = ', option)
 
     if option == None or content == None:
         return_data = {
@@ -41,8 +45,9 @@ def send_msg():
         }
     elif option == Option.QA.value:
         # Do QA inference
+        answer = qa_engine.predict(content)
         return_data = { # data return to FE
-            "message": f"This is a QA response",
+            "message": answer,
             "code": 0
         }
     elif option == Option.Fake.value:

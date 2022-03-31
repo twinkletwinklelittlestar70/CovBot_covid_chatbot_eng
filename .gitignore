@@ -9,6 +9,7 @@ metis-1cc2695cd67f.json
 backend/models/conv
 backend/models/conv/*
 backend/models/fake_model
+models/covid_kaggle_answer_from_qa.json
 
 frontend/node_modules
 frontend/dist
