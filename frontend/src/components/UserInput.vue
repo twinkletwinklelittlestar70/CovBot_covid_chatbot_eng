@@ -1,13 +1,14 @@
 <template>
   <div class="input-container">
       <div class="send-options">
-          <el-button type="text" @click="changeOpt(0)"><span class="option-label">Q & A</span></el-button>
-          <el-button type="text" @click="changeOpt(1)"><span class="option-label">Fake detector</span></el-button>
-          <el-button type="text" @click="changeOpt(2)"><span class="option-label">Cough</span></el-button>
+          <el-button type="text" @click="changeOpt(0)"><span :class="['option-label', {'active-opt': option === 0}]">Q & A</span></el-button>
+          <el-button type="text" @click="changeOpt(1)"><span :class="['option-label', {'active-opt': option === 1}]">Fake detector</span></el-button>
+          <el-button type="text" @click="changeOpt(2)"><span :class="['option-label', {'active-opt': option === 2}]">Cough</span></el-button>
       </div>
       <div class="send-box">
-            <el-button v-if="option===2" class="record-btn" @click="recordClickHandler">
-                <span v-if="recording">Stop</span>
+            <el-button v-if="option===2" class="record-btn" :class="[{'red-btn': !loading && recording}]" @click="clickHandler">
+                <span v-if="loading">Waiting about 30s...</span>
+                <span v-else-if="recording">Stop</span>
                 <span v-else>Record</span>
             </el-button>
             <el-input v-else v-model="input" placeholder="Please input" />
@@ -25,19 +26,20 @@ export default {
   name: 'UserInput',
   props: {},
   setup () {
-    const { recording, duration, audioBlob, recordClickHandler } = useRecorder()
+    const { recording, audioBlob, audioWave, recordClickHandler } = useRecorder()
 
     return {
       recording,
-      duration,
       audioBlob,
+      audioWave,
       recordClickHandler
     }
   },
   data() {
     return {
         input: '',
-        option: 0
+        option: 0,
+        loading: false // doing the prediction
     };
   },
   components: {
@@ -45,9 +47,13 @@ export default {
   },
   methods: {
       sendMessage () {
+          if (this.loading) {
+              return
+          }
           const content = this.input
           const option = this.option
           const audio = this.audioBlob
+          const audioWave = this.audioWave
           
           if (content) {
             console.log('content', content)
@@ -58,9 +64,11 @@ export default {
                 this.$emit('submit', {content: data.message, user: 0})
             })
           } else if (audio) {
-            this.$emit('submit', {audio, user: 1, content: ''})
+            this.$emit('submit', {audio: audioWave, user: 1, content: ''})
+            this.loading = true
             uploadAudio({ audio }).then(data => {
                 console.log('uploadAudio success', data)
+                this.loading = false
                 this.audioBlob = null
                 this.$emit('submit', {content: data.message, user: 0})
             })
@@ -73,20 +81,24 @@ export default {
           this.option = option
           let welcomemesg = ''
           if (option === 0) {
-               welcomemesg = 'Now you can ask me some questions!'
+               welcomemesg = 'Now you can ask me some questions about covid.'
                this.$emit('submit', {content: welcomemesg, user: 0})
           } else if (option === 1) {
               welcomemesg = 'Please paste the news and I will tell you weather it is real.'
               this.$emit('submit', {content: welcomemesg, user: 0})
           } else {
-              welcomemesg = 'Now try to long click the record button and have a covid test!'
+              welcomemesg = 'Now try to record your cough audio and have a covid test. Click to start and click to stop.'
               this.$emit('submit', {content: welcomemesg, user: 0})
               // TODO the audio initialization
 
           }
-
           
-          
+      },
+      clickHandler () {
+          if (this.loading) {
+              return
+          }
+          this.recordClickHandler()
       }
   }
 }
@@ -106,6 +118,10 @@ export default {
     padding: 5px;
     border-radius: 3px;
 }
+.option-label.active-opt {
+    background: #66b1ff;
+    color: white;
+}
 .send-box {
     display: flex;
 }
@@ -114,5 +130,9 @@ export default {
 }
 .record-btn {
     flex: 1;
+}
+.red-btn, .red-btn.el-button:focus, .red-btn.el-button:hover {
+    color: white;
+    background: #cd8080;
 }
 </style>

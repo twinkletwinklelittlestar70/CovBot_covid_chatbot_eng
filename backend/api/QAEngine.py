@@ -56,6 +56,10 @@ class QAEngine():
 
     index = max_cos[0][0]
     cos_value = cos_list[index]
+
+    print('===> cos value:', cos_value)
+    print('===> most related question:', self.question_list[index])
+    print('===> most related answer:', self.answer_list[index])
     
     if cos_value < COS_NO_ANSWER_THRESHOLD:
         ans = "Sorry. I don't known the answer."
@@ -68,3 +72,10 @@ class QAEngine():
 
 
 qa_engine = QAEngine()
+
+# test cases
+# qa_engine.predict('Is the virus transmitted by aerisol, droplets, food, close contact, fecal matter, or water?')
+# qa_engine.predict('Is the virus transmitted by water?')
+# qa_engine.predict('Is the virus transmitted?')
+# qa_engine.predict('covid')
+# qa_engine.predict('unrelated question?')

@@ -1,6 +1,6 @@
 <template>
   <!-- <img class="app-logo" alt="Your song logo" src="./assets/banner.jpg"> -->
-  <h2>CovBox: A covid assistant for everyone.</h2>
+  <h2>CovBot: A covid assistant for everyone.</h2>
   <ChatContainer />
 </template>
 

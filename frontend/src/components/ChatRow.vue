@@ -16,7 +16,7 @@
               {{ translatedText }}
             </div>
             <div class="audio" v-if="!content">
-              <span>[audio]</span>.....
+              <span><canvas id="canvas"></canvas>[audio]</span>
             </div>
         </div>
       </div>
@@ -35,6 +35,7 @@ export default {
     },
     username: String,
     content: String,
+    audio: Object,
   },
   data() {
     return {
@@ -43,6 +44,11 @@ export default {
   },
   components: {
     
+  },
+  mounted () {
+    if (this.audio) {
+      this.drawAudio()
+    }
   },
   methods: {
     translation () {
@@ -62,6 +68,47 @@ export default {
         console.log('result of translation', data)
         this.translatedText = data.message
       })
+    },
+    drawAudio () {
+
+      console.log('start drawAudio!!!!')
+
+      let dataArray = this.audio,
+        bufferLength = dataArray.length
+
+      const oCanvas = document.getElementById('canvas')
+      const ctx = oCanvas.getContext("2d")
+
+      // 填充背景色
+      ctx.fillStyle = 'rgb(256, 256, 256)'
+      ctx.fillRect(0, 0, oCanvas.width, oCanvas.height)
+
+      // 设定波形绘制颜色
+      ctx.lineWidth = 1
+      ctx.strokeStyle = 'rgb(0, 0, 0)'
+
+      ctx.beginPath()
+
+      let sliceWidth = oCanvas.width * 1.0 / bufferLength, // 一个点占多少位置，共有bufferLength个点要绘制
+          x = 0         // 绘制点的x轴位置
+
+      for (let i = 0; i < bufferLength; i++) {
+          let v = dataArray[i] / 128.0 // dataArray[i] / 128.0;
+          let y = v * oCanvas.height / 2
+
+          if (i === 0) {
+              // 第一个点
+              ctx.moveTo(x, y)
+          } else {
+              // 剩余的点
+              ctx.lineTo(x, y)
+          }
+          // 依次平移，绘制所有点
+          x += sliceWidth
+      }
+
+      ctx.lineTo(oCanvas.width, oCanvas.height / 2)
+      ctx.stroke()
     }
   }
 }
@@ -114,5 +161,9 @@ export default {
   text-align: left;
   font-size: 12px;
   color: #666666;
+}
+#canvas {
+  height: 80px;
+  width: 100%;
 }
 </style>

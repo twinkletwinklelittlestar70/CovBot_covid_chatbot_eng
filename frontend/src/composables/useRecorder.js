@@ -11,14 +11,13 @@ export default function useRecorder() {
   window.recorder = recorder
   
   const recording = ref(false)
-  const duration = ref(0)
   const audioBlob = ref()
+  const audioWave = ref()
   
   const recordClickHandler = () => {
     const old = recording.value
     print('!!! recordClickHandler', old)
     if (!old) { // if not recording, click to start record
-      recorder.onprocess = time => duration.value = time.toFixed(2)
 
       recorder.start().then(() => {
         // scuessfully start to record
@@ -29,6 +28,8 @@ export default function useRecorder() {
       });
     } else {
       // if is recording, click to get data.
+      const wave = recorder.getRecordAnalyseData()
+      audioWave.value = wave
       recorder.stop();
       audioBlob.value = recorder.getWAVBlob()
     }
@@ -40,8 +41,8 @@ export default function useRecorder() {
 
   return {
     recording,
-    duration,
     audioBlob,
+    audioWave,
     recordClickHandler
   }
 }

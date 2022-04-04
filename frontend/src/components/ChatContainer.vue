@@ -33,7 +33,10 @@ export default {
     return {
         chatData: [{
             username: "Bot",
-            content: "Hi! Welcome to Metis. You can ask me questions about covid."
+            content: "Hi! This is CovBot. I can assist you with anything you want to know about Covid-19. Try ask me questions about covid."
+        }, {
+            username: "Bot",
+            content: "DISCLAIMER: Please note that the information provided here is not a substitute for advice from a medical professional."
         }] // [{username: "Me", content: "What is the weather today?"},{username: "Bot", content: "Today is windy. Today is windy.Today is windy Today is windy Today is windy."}]
         
     };

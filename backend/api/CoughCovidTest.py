@@ -64,14 +64,11 @@ class CoughCovidTest():
 
     # feature extraction and modeling
     y_pred = []
+    max_range = min(wav.shape[0]-config.step, 1000)
 
-    print('====> build_predictions_cnn', wav.shape[0], config.step)
+    print('====> build_predictions max_range', wav.shape[0], config.step, max_range)
 
-    pred_range = wav.shape[0]-config.step
-    max_range = 1000
-    
-
-    for i in range(0, wav.shape[0]-config.step):
+    for i in range(0, max_range):
         sample = wav[i:i+config.step] # choose sample of size config.step
         x = mfcc(sample, rate,
                 numcep=config.nfeat, nfilt=config.nfilt, nfft=config.nfft)
@@ -114,7 +111,7 @@ class CoughCovidTest():
     
     print('Time taken by model for inference:', time.time() - start, 'sec')
     
-    return result
+    return False
 
 
 covid_test = CoughCovidTest()
