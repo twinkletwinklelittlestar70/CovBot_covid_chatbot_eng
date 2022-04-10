@@ -41,7 +41,7 @@ class QAEngine():
         for question in doc['questions']:
             question_list.append(question['question'])
             answer_list.append(question['results'][0]['context'])
-
+    print('The number of questions is ', len(question_list))
     return question_list, answer_list
   
   def predict (self, question):

@@ -52,12 +52,13 @@ def send_msg():
         }
     elif option == Option.Fake.value:
         # Do fake detctor
-        is_real = fake_detector.predict(content)
+        is_real, html = fake_detector.predict(content)
 
         real_text = 'real' if is_real else 'fake'
-        message = "This is a {} news. Please input another news to detect or choose other functions.".format(real_text)
+        message = "This is a {} news. Please input another news to detect or choose other functions. The contributions of the components in the sentence to the results are shown below.".format(real_text)
         return_data = { # data return to FE
             "message": message,
+            "html": html,
             "code": 0
         }
     else:

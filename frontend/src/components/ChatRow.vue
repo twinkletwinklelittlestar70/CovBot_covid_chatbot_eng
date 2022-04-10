@@ -12,6 +12,7 @@
                 <el-icon><DocumentCopy /></el-icon>
               </el-button>
             </div>
+            <div class="fake-html" v-if="fakehtml"><span v-html="fakehtml"></span></div>
             <div class="translation" v-if="translatedText">
               {{ translatedText }}
             </div>
@@ -36,6 +37,7 @@ export default {
     username: String,
     content: String,
     audio: Object,
+    fakehtml: String
   },
   data() {
     return {
@@ -165,5 +167,12 @@ export default {
 #canvas {
   height: 80px;
   width: 100%;
+}
+.fake-html {
+  text-align: left;
+  background: snow;
+  font-size: 12px;
+  margin-top: 10px;
+  padding: 10px;
 }
 </style>

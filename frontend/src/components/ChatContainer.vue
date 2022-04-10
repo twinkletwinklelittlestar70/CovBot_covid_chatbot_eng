@@ -9,6 +9,7 @@
                 :username="data.username" 
                 :content="data.content"
                 :audio="data.audio"
+                :fakehtml="data.fake_html"
             />
         </div>
         <div class="box-end">
@@ -33,7 +34,7 @@ export default {
     return {
         chatData: [{
             username: "Bot",
-            content: "Hi! This is CovBot. I can assist you with anything you want to know about Covid-19. Try ask me questions about covid."
+            content: "Hi! This is CovBot. I can assist you with anything you want to know about Covid-19. Try asking me questions about covid."
         }, {
             username: "Bot",
             content: "DISCLAIMER: Please note that the information provided here is not a substitute for advice from a medical professional."
@@ -46,12 +47,13 @@ export default {
       UserInput
   },
   methods: {
-    submitMesg ({content, audio, user = 1}) { // user 0: chatbot, 1: user
+    submitMesg ({content, audio = null, user = 1, fake_html = ''}) { // user 0: chatbot, 1: user
         console.log('submitMesg', content, user)
         let newData = { 
             username: USERNAME[user], 
             content: content || '', 
-            audio: audio || null 
+            audio,
+            fake_html
         }
         this.chatData.push(newData)
         this.scrollToBottom()

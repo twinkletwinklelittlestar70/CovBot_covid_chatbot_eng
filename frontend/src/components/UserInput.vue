@@ -3,11 +3,11 @@
       <div class="send-options">
           <el-button type="text" @click="changeOpt(0)"><span :class="['option-label', {'active-opt': option === 0}]">Q & A</span></el-button>
           <el-button type="text" @click="changeOpt(1)"><span :class="['option-label', {'active-opt': option === 1}]">Fake detector</span></el-button>
-          <el-button type="text" @click="changeOpt(2)"><span :class="['option-label', {'active-opt': option === 2}]">Cough</span></el-button>
+          <el-button type="text" @click="changeOpt(2)"><span :class="['option-label', {'active-opt': option === 2}]">Covid test using cough</span></el-button>
       </div>
       <div class="send-box">
             <el-button v-if="option===2" class="record-btn" :class="[{'red-btn': !loading && recording}]" @click="clickHandler">
-                <span v-if="loading">Waiting about 30s...</span>
+                <span v-if="loading">Wait about 30s...</span>
                 <span v-else-if="recording">Stop</span>
                 <span v-else>Record</span>
             </el-button>
@@ -61,7 +61,7 @@ export default {
             this.input = ''
 
             postMsg({ content, option }).then(data => {
-                this.$emit('submit', {content: data.message, user: 0})
+                this.$emit('submit', {content: data.message, user: 0, fake_html: data.html || ''})
             })
           } else if (audio) {
             this.$emit('submit', {audio: audioWave, user: 1, content: ''})
@@ -84,7 +84,7 @@ export default {
                welcomemesg = 'Now you can ask me some questions about covid.'
                this.$emit('submit', {content: welcomemesg, user: 0})
           } else if (option === 1) {
-              welcomemesg = 'Please paste the news and I will tell you weather it is real.'
+              welcomemesg = 'Please paste the news and I will tell you whether it is real.'
               this.$emit('submit', {content: welcomemesg, user: 0})
           } else {
               welcomemesg = 'Now try to record your cough audio and have a covid test. Click to start and click to stop.'
