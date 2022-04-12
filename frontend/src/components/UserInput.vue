@@ -1,8 +1,8 @@
 <template>
   <div class="input-container">
       <div class="send-options">
-          <el-button type="text" @click="changeOpt(0)"><span :class="['option-label', {'active-opt': option === 0}]">Q & A</span></el-button>
-          <el-button type="text" @click="changeOpt(1)"><span :class="['option-label', {'active-opt': option === 1}]">Fake detector</span></el-button>
+          <el-button type="text" @click="changeOpt(0)"><span :class="['option-label', {'active-opt': option === 0}]">Q&A</span></el-button>
+          <el-button type="text" @click="changeOpt(1)"><span :class="['option-label', {'active-opt': option === 1}]">Fake tweet detection</span></el-button>
           <el-button type="text" @click="changeOpt(2)"><span :class="['option-label', {'active-opt': option === 2}]">Covid test using cough</span></el-button>
       </div>
       <div class="send-box">

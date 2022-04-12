@@ -9,10 +9,30 @@ export default function useRecorder() {
   })
 
   window.recorder = recorder
+  window.datatimer = null
   
   const recording = ref(false)
   const audioBlob = ref()
   const audioWave = ref()
+  
+
+  const getDataArray = () => {
+    console.log('start getDataArray!')
+    window.datatimer = setInterval(() => {
+      const wave = recorder.getRecordAnalyseData()
+      // const threshold = 10
+      // const ifEffective = !! wave.filter(data => (data - 128 > threshold || 128 - data > threshold)).length
+      // console.log('getting wave data', ifEffective, wave)
+
+      const current = audioWave._rawValue || []
+      const newWave = [...current, ...wave] // 这么写不太好，应该用reactive来达到响应式
+      audioWave.value = newWave
+
+      // if (ifEffective) {
+      //   console.log('start getDataArray!')
+      // }
+    }, 200)
+  }
   
   const recordClickHandler = () => {
     const old = recording.value
@@ -24,14 +44,15 @@ export default function useRecorder() {
         console.log('===>[Recorder start successfully]')
       }, (error) => {
         // start error
-        console.log(`===>[Recorder start error] ${error.name} : ${error.message}`);
+        console.log(`===>[Recorder start error] ${error.name} : ${error.message}`)
       });
+      getDataArray();
     } else {
-      // if is recording, click to get data.
-      const wave = recorder.getRecordAnalyseData()
-      audioWave.value = wave
-      recorder.stop();
-      audioBlob.value = recorder.getWAVBlob()
+      setTimeout(() => {
+        recorder.stop();
+        clearInterval(window.datatimer)
+        audioBlob.value = recorder.getWAVBlob()
+      }, 0)
     }
     recording.value = !old
   }

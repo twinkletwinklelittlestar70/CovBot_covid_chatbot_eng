@@ -55,7 +55,12 @@ def send_msg():
         is_real, html = fake_detector.predict(content)
 
         real_text = 'real' if is_real else 'fake'
-        message = "This is a {} news. Please input another news to detect or choose other functions. The contributions of the components in the sentence to the results are shown below.".format(real_text)
+        if is_real:
+            message = "This is a {} news.".format(real_text)
+        else:
+            message = "This is a {} news. The contributions of the components in the sentence to the results are shown below.".format(real_text)
+            
+        
         return_data = { # data return to FE
             "message": message,
             "html": html,

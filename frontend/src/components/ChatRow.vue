@@ -77,6 +77,8 @@ export default {
 
       let dataArray = this.audio,
         bufferLength = dataArray.length
+      
+      window.audio = this.audio
 
       const oCanvas = document.getElementById('canvas')
       const ctx = oCanvas.getContext("2d")
@@ -95,7 +97,7 @@ export default {
           x = 0         // 绘制点的x轴位置
 
       for (let i = 0; i < bufferLength; i++) {
-          let v = dataArray[i] / 128.0 // dataArray[i] / 128.0;
+          let v = dataArray[i] / 128 // 128.0 // dataArray[i] / 128.0;
           let y = v * oCanvas.height / 2
 
           if (i === 0) {
