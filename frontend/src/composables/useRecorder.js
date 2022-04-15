@@ -24,7 +24,7 @@ export default function useRecorder() {
       // const ifEffective = !! wave.filter(data => (data - 128 > threshold || 128 - data > threshold)).length
       // console.log('getting wave data', ifEffective, wave)
 
-      const current = audioWave._rawValue || []
+      const current = audioWave.value || []
       const newWave = [...current, ...wave] // 这么写不太好，应该用reactive来达到响应式
       audioWave.value = newWave
 
