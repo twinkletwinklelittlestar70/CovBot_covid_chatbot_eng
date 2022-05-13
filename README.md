@@ -1,6 +1,6 @@
-# Metis covid chatbot
+# CovBot covid chatbot
 
-A Q&A chatbot about covid providing functions like sentiment analysis, fast diagnosis and fake news detection
+CovBot is a Q&A chatbot about covid providing functions like QA, fast diagnosis and fake news detection. This repo is the engineering part of the whole project and for algorithms and models please refer to https://github.com/twinkletwinklelittlestar70/CovBot.
 
 # Run back-end code
 
